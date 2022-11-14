@@ -1,4 +1,4 @@
-package com.nopcommerce.admin;
+package com.nopcommerce.users;
 
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;

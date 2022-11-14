@@ -1,4 +1,4 @@
-package com.nopcommerce.admin;
+package com.nopcommerce.users;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeClass;
@@ -11,10 +11,16 @@ public class User01_register_login {
   }	
   
   @Test
-  public void TC_01() {
+  public void Register_01_Empty() {
   }
   @Test
-  public void TC_02() {
+  public void Register_02_Email_Incorrect() {
+  }
+  @Test
+  public void Register_03_Email_Exist() {
+  }
+  @Test
+  public void Register_04_Password_Not_Match() {
   }
 
 

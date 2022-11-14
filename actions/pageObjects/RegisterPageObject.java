@@ -1,4 +1,4 @@
-package pageObject;
+package pageObjects;
 
 public class RegisterPageObject {
 
