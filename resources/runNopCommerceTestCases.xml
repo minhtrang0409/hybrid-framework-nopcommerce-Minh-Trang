@@ -2,7 +2,7 @@
 <suite parallel="false" name="NopCommerce">
   <test name="Run on FIREFOX">
     <classes>
-      <class name="com.nopcommerce.users.User01_register_login"/>
+      <class name="com.nopcommerce.users.Level_03_Base_Object_Pattern"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->
