@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite parallel="false" name="NopCommerce">
+<!-- 
   <test name="Run on FIREFOX">
+	<parameter name="browser" value="Firefox"></parameter>
     <classes>
-      <class name="com.nopcommerce.users.Level_03_Base_Object_Pattern"/>
+      <class name="com.nopcommerce.users.Level_07_Switch_Page"/>
     </classes>
-  </test> <!-- Test -->
-</suite> <!-- Suite -->
+  </test> 
+-->
+  <test name="Run on CHROME">
+	<parameter name="browser" value="Chrome"></parameter>
+    <classes>
+      <class name="com.nopcommerce.users.Level_08_Switch_Role"/>
+    </classes>
+  </test> 
+<!-- 
+  <test name="Run on EDGE">
+	<parameter name="browser" value="EDGE"></parameter>
+    <classes>
+      <class name="com.nopcommerce.users.Level_07_Switch_Page"/>
+    </classes>
+  </test> 
+-->
+</suite> 

@@ -11,23 +11,22 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import commons.BasePage;
-import pageObjects.CustomerInforPageObject;
-import pageObjects.HomePageObject;
-import pageObjects.LoginPageObject;
-import pageObjects.RegisterPageObject;
+import pageObjects.nopCommerce.portal.UserCustomerInforPageObject;
+import pageObjects.nopCommerce.portal.UserHomePageObject;
+import pageObjects.nopCommerce.portal.UserLoginPageObject;
+import pageObjects.nopCommerce.portal.UserRegisterPageObject;
 
-public class Level_03_Base_Object_Pattern extends BasePage {
+public class Level_03_Base_Object_Pattern {
 	WebDriver driver;
 	WebDriverWait explicitWait;
 	String projectPath = System.getProperty("user.dir");
 	String osName = System.getProperty("os.name");
 	String emailAddress;
 
-	HomePageObject homePage;
-	LoginPageObject loginPage;
-	RegisterPageObject registerPage;
-	CustomerInforPageObject customerInforPage;
+	UserHomePageObject homePage;
+	UserLoginPageObject loginPage;
+	UserRegisterPageObject registerPage;
+	UserCustomerInforPageObject customerInforPage;
 	
 	@BeforeClass
 	public void beforeClass() {
@@ -46,12 +45,11 @@ public class Level_03_Base_Object_Pattern extends BasePage {
 	@Test
 	public void User_01_Regiter() {
 		//1- Mở URL ra thì Khởi tạo Homepage
-		homePage = new HomePageObject(driver);
+		homePage = new UserHomePageObject(driver);
 		
 		homePage.clickToRegisterLink();
-		clickToElement(driver, "//a[@class='ico-register']");
 		
-		registerPage = new RegisterPageObject(driver);
+		registerPage = new UserRegisterPageObject(driver);
 		
 		registerPage.clickToGenderMaleRadio();
 		registerPage.inputToFirstNameTextbox("Minh");
@@ -67,32 +65,28 @@ public class Level_03_Base_Object_Pattern extends BasePage {
 		Assert.assertEquals(registerPage.getRegisteredSuccessMessage(), "Your registration completed");
 		registerPage.clickToLogOutLink();
 		//3- Click logout link => Khởi tạo Homepage
-		homePage = new HomePageObject(driver);
+		homePage = new UserHomePageObject(driver);
 	}
 
 	@Test
 	public void User_02_Login() {
-		homePage.clickToLoginLink();
-		clickToElement(driver, "//a[@class='ico-login']");
+		homePage.openLoginPage();
 		//4.- Khởi tạo login page
-		loginPage = new LoginPageObject(driver);
+		loginPage = new UserLoginPageObject(driver);
 		loginPage.inputToEmailAddressTextbox(emailAddress);
 		loginPage.inputToPasswordTextbox("123456");
 		loginPage.clickToLoginButton();
 		//5.- Khởi tạo homepage
-		homePage = new HomePageObject(driver);
+		homePage = new UserHomePageObject(driver);
 		
 		Assert.assertTrue(homePage.isMyAccountLinkDisplay());
-		Assert.assertTrue(isElementDisplayed(driver, "//a[@class='ico-account']"));
 		
-		homePage.clickToMyAccountlink();
-		clickToElement(driver, "//a[@class='ico-account']");
+		homePage.openMyAccountPage();
 		
 		//6.- Khởi tạo Customer Infor Page
-		customerInforPage = new CustomerInforPageObject(driver);
-		
-		customerInforPage.isGenderMaleRadioSelected();
-		Assert.assertTrue(isElementSelected(driver, "//input[@id='gender-male']"));
+		customerInforPage = new UserCustomerInforPageObject(driver);
+
+		Assert.assertTrue(customerInforPage.isGenderMaleRadioSelected());
 		
 		Assert.assertEquals(customerInforPage.getFirstNameTextboxAttribute(),"Minh");
 		Assert.assertEquals(customerInforPage.getLastNameTextboxAttribute(), "John");
