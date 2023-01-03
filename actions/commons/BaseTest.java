@@ -14,7 +14,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class BaseTest {
-	WebDriver driver;
+	public WebDriver driver;
 	String projectPath = System.getProperty("user.dir");
 	
 	protected WebDriver getBrowserDriver(String browserName) {
@@ -25,7 +25,6 @@ public class BaseTest {
 //			driver = new FirefoxDriver();
 			driver = WebDriverManager.firefoxdriver().create();
 			break;
-			
 		case CHROME :
 			driver = WebDriverManager.chromedriver().create();
 			break;
@@ -39,7 +38,32 @@ public class BaseTest {
 		driver.manage().window().setPosition(new Point(0,0));
 		driver.manage().window().maximize();
 		driver.get(GlobalConstants.PORTAL_PAGE_URL);
-		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(GlobalConstants.LONG_TIMEOUT, TimeUnit.SECONDS);
+		return driver;
+	}
+	
+	protected WebDriver getBrowserDriver(String browserName, String appUrl) {
+		BrowserName browser = BrowserName.valueOf(browserName.toUpperCase());
+		switch (browser) {
+		case FIREFOX: 
+//			WebDriverManager.firefoxdriver().setup();
+//			driver = new FirefoxDriver();
+			driver = WebDriverManager.firefoxdriver().create();
+			break;
+		case CHROME :
+			driver = WebDriverManager.chromedriver().create();
+			break;
+		case EDGE :	
+			driver = WebDriverManager.edgedriver().create();
+			break;
+		default:
+			throw new RuntimeException("Please input with correct browser name.");
+		}
+		
+		driver.manage().window().setPosition(new Point(0,0));
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(GlobalConstants.LONG_TIMEOUT, TimeUnit.SECONDS);
+		driver.get(appUrl);
 		return driver;
 	}
 	
