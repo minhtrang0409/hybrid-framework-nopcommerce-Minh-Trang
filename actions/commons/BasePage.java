@@ -15,6 +15,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import pageObjects.nopCommerce.admin.AdminLoginPageObject;
 import pageObjects.nopCommerce.portal.UserAddressPageObject;
@@ -22,6 +23,7 @@ import pageObjects.nopCommerce.portal.UserCustomerInforPageObject;
 import pageObjects.nopCommerce.portal.UserHomePageObject;
 import pageObjects.nopCommerce.portal.UserMyproductReviewPageObject;
 import pageObjects.nopCommerce.portal.UserRewardPointPageObject;
+import pageUIs.JQuery.uploadFile.BasePageJqueryUI;
 import pageUIs.nopCommerce.user.BasePageUI;
 
 public class BasePage {
@@ -243,16 +245,28 @@ public class BasePage {
 	public int getElementSize(WebDriver driver, String locatorType,String... dynamicValues) {
 		return getListWebElement(driver, getDynamicXpath(locatorType, dynamicValues)).size();
 	}
+	
+	public void uncheckToCheckbox(WebDriver driver, String locatorType,String... dynamicValues) {
+		if(isElementSelected(driver, getDynamicXpath(locatorType, dynamicValues))) {
+			getWebElement(driver, getDynamicXpath(locatorType, dynamicValues)).click();
+		}
+	}
 
 	public void uncheckToCheckbox(WebDriver driver, String locatorType) {
 		if(isElementSelected(driver, locatorType)) {
 			getWebElement(driver, locatorType).click();
 		}
 	}
-		
+	
 	public void checkToCheckboxRadio(WebDriver driver, String locatorType) {
 		if(!isElementSelected(driver, locatorType)) {
 			getWebElement(driver, locatorType).click();
+		}
+	}
+		
+	public void checkToCheckboxRadio(WebDriver driver, String locatorType,String... dynamicValues) {
+		if(!isElementSelected(driver, getDynamicXpath(locatorType, dynamicValues))) {
+			getWebElement(driver, getDynamicXpath(locatorType, dynamicValues)).click();
 		}
 	}
 	
@@ -288,6 +302,14 @@ public class BasePage {
 	
 	public void rightClickToElement(WebDriver driver, String locatorType) {
 		new Actions(driver).contextClick(getWebElement(driver, locatorType)).perform();
+	}
+	
+	public void pressKeyToElement(WebDriver driver, String locatorType, Keys key) {
+		new Actions(driver).sendKeys(getWebElement(driver, locatorType), key).perform();
+	}
+	
+	public void pressKeyToElement(WebDriver driver, String locatorType, Keys key, String... dynamicValues ) {
+		new Actions(driver).sendKeys(getWebElement(driver, getDynamicXpath(locatorType, dynamicValues)), key).perform();
 	}
 	
 	public void dragDropElement(WebDriver driver, String sourceLocator, String targetLocator) {
@@ -383,10 +405,15 @@ public class BasePage {
 		}
 	}
 	
+	public boolean isImageLoaded(WebDriver driver, String locator, String... dynamicValues ) {
+		boolean status = (boolean) ((JavascriptExecutor) driver).executeScript("return arguments[0].complete && typeof arguments[0].naturalWidth != \"undefined\" && arguments[0].naturalWidth > 0", getWebElement(driver,getDynamicXpath(locator, dynamicValues)));
+		return status;
+	}
+	
 	//Wait
 	
 	public void waitForElementVisible(WebDriver driver, String locatorType,String... dynamicValues) {
-		new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOfElementLocated(getByLocator(getDynamicXpath(locatorType, dynamicValues))));
+		new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOfElementLocated(getByLocator(getDynamicXpath(locatorType, dynamicValues))));
 	}
 	
 	public void waitForElementVisible(WebDriver driver, String locator) {
@@ -437,6 +464,18 @@ public class BasePage {
 		new WebDriverWait(driver, 30).until(ExpectedConditions.elementToBeSelected(getByLocator(locator)));
 	}
 
+	public void uploadMultipleFiles (WebDriver driver, String ...fileNames) {
+		//Đường dẫn của thư mục uploadFiles: Windows/ MAC/Linux
+		String filePath = GlobalConstants.UPLOAD_FILE;
+		//Đường dẫn của tất cả các files
+		String fullFileName = "";
+		for (String file: fileNames) {
+			fullFileName = fullFileName + filePath + file + "\n";
+		}
+		fullFileName = fullFileName.trim(); // xóa khoảng trắng, ở đầu hoặc cuối chuỗi (String)
+		getWebElement(driver, BasePageJqueryUI.UPLOAD_FILE).sendKeys(fullFileName);
+		}
+	
 // Tối ưu ở bài học Level_07_Switch_Page
 	public UserAddressPageObject openAddressPage (WebDriver driver) {
 		waitForElementClickable(driver, BasePageUI.ADDRESS_LINK);
@@ -495,6 +534,6 @@ public class BasePage {
 		clickToElement(driver, BasePageUI.LOGOUT_LINK_ADMIN_PAGE);
 		return PageGeneratorManager.getAdminLoginPage(driver);
 	}
-	
+
 	private long longTimeout =30;
 }

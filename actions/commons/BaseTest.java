@@ -42,7 +42,7 @@ public class BaseTest {
 		return driver;
 	}
 	
-	protected WebDriver getBrowserDriver(String browserName, String appUrl) {
+	public WebDriver getBrowserDriver(String browserName, String appUrl) {
 		BrowserName browser = BrowserName.valueOf(browserName.toUpperCase());
 		switch (browser) {
 		case FIREFOX: 

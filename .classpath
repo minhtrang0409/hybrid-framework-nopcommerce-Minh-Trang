@@ -12,6 +12,7 @@
 	<classpathentry kind="src" path="actions"/>
 	<classpathentry kind="src" path="testdata"/>
 	<classpathentry kind="src" path="javaTester"/>
+	<classpathentry kind="src" path="uploadFiles"/>
 	<classpathentry kind="con" path="org.testng.TESTNG_CONTAINER"/>
 	<classpathentry kind="lib" path="libraries/client-combined-3.141.59-sources.jar"/>
 	<classpathentry kind="lib" path="libraries/selenium-server-standalone-3.141.59.jar" sourcepath="libraries/client-combined-3.141.59-sources.jar"/>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite parallel="false" name="JQuery">
 
-  <parameter name="url" value="https://blueimp.github.io/jQuery-File-Upload/"></parameter>
+  <parameter name="url" value="https://www.jqueryscript.net/demo/jQuery-Dynamic-Data-Grid-Plugin-appendGrid/"></parameter>
   <test name="Run on CHROME">
 	<parameter name="browser" value="CHROME"></parameter>
     <classes>
-      <class name="com.jquery.Level_11_Upload_Files"/>
+      <class name="com.jquery.datatable.Level_10_DataTable_DataGrid"/>
     </classes>
   </test> 
 
