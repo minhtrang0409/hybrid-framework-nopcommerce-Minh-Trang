@@ -1,7 +1,9 @@
 package commons;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
@@ -277,6 +279,34 @@ public class BasePage {
 	public boolean  isElementDisplayed(WebDriver driver, String locatorType,String... dynamicValues) {
 		return getWebElement(driver, getDynamicXpath(locatorType, dynamicValues)).isDisplayed();
 	}
+	
+	public boolean  isElementUnDisplayed (WebDriver driver, String locatorType) {
+		System.out.println("Start time = " + new Date().toString());
+		overrideGlobalTimeout(driver, 5);
+		List<WebElement> elements = getListWebElement(driver, locatorType);
+		
+		//Nếu như mình gán =5 thì sẽ apply cho tất cả các step về sau đó: findElement/ findElements
+		overrideGlobalTimeout(driver, 30);
+		
+		if (elements.size() == 0) {
+			System.out.println("Case3- Element k có trong DOM");
+			System.out.println("End time = " + new Date().toString());
+			return true;
+			// Nó có kích thước = 1 ( Có trong DOM) 
+			// Ko được hiển thị. 
+		}	else if (elements.size() > 0 && !elements.get(0).isDisplayed()) {
+			System.out.println("Case 2- Elemnt có trong DOM nhưng không visible/displayed");
+			return true;
+		}
+			System.out.println("Element in DOM và displayed");
+			return false;
+		
+	}
+	
+	public void overrideGlobalTimeout (WebDriver driver, long timeout) {
+		driver.manage().timeouts().implicitlyWait(timeout, TimeUnit.SECONDS);
+	}
+	
 	public boolean  isElementEnabled(WebDriver driver, String locatorType) {
 		return getWebElement(driver, locatorType).isEnabled();
 	}
@@ -432,6 +462,14 @@ public class BasePage {
 		new WebDriverWait(driver, 30).until(ExpectedConditions.invisibilityOfElementLocated(getByLocator(locator)));
 	}
 	
+	//Wait for element undisplayed in DOM or not in DOM and override implicit timeout
+	public void waitForElementUnDisplayed(WebDriver driver, String locator) {
+		WebDriverWait explicitWait =	new WebDriverWait(driver, longTimeout);
+		overrideGlobalTimeout(driver, shortTimeout);
+		explicitWait.until(ExpectedConditions.invisibilityOfElementLocated(getByLocator(locator)));
+		overrideGlobalTimeout(driver, longTimeout);
+	}
+	
 	public void waitForElementClickable(WebDriver driver, String locatorType,String... dynamicValues) {
 		new WebDriverWait(driver, 30).until(ExpectedConditions.elementToBeClickable(getByLocator(getDynamicXpath(locatorType, dynamicValues))));
 	}
@@ -535,5 +573,6 @@ public class BasePage {
 		return PageGeneratorManager.getAdminLoginPage(driver);
 	}
 
-	private long longTimeout =30;
+	private long longTimeout = GlobalConstants.LONG_TIMEOUT;
+	private long shortTimeout = GlobalConstants.SHORT_TIMEOUT;
 }
